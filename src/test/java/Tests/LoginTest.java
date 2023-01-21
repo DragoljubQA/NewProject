@@ -49,7 +49,7 @@ public class LoginTest extends BaseTest {
 
     @Test (priority = 10)
     public void userCanLogIn() {
-        logIn("user", validPassword);
+        logIn(validUsername, validPassword);
         Assert.assertEquals(driver.getCurrentUrl(), HomeURL);
         Assert.assertTrue(homePage.CartButton.isDisplayed());
         Assert.assertTrue(homePage.SortButton.isDisplayed());
