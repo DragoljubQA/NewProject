@@ -1,17 +1,24 @@
 package Tests;
 
 import Base.BaseTest;
+import Helpers.WebDriverFactory;
 import Pages.HomePage;
 import Pages.LoginPage;
 import com.github.javafaker.Faker;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 import static Helpers.Data.*;
@@ -25,7 +32,7 @@ public class LoginTest extends BaseTest {
         /*ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         driver = new ChromeDriver(options);*/
-        driver = new ChromeDriver();
+        driver = WebDriverFactory.createWebDriver();
         wdwait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.get(LandingURL);
@@ -42,7 +49,7 @@ public class LoginTest extends BaseTest {
 
     @Test (priority = 10)
     public void userCanLogIn() {
-        logIn(validUsername, validPassword);
+        logIn("user", validPassword);
         Assert.assertEquals(driver.getCurrentUrl(), HomeURL);
         Assert.assertTrue(homePage.CartButton.isDisplayed());
         Assert.assertTrue(homePage.SortButton.isDisplayed());
@@ -93,7 +100,13 @@ public class LoginTest extends BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) throws IOException {
+        if (result.getStatus() == ITestResult.FAILURE || result.getStatus() == ITestResult.SKIP){
+            File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            File savedScreenshot = new File("target/screenshots/"+result.getTestClass().getRealClass().getSimpleName()+"/"+result.getMethod().getMethodName()+".jpg");
+            FileUtils.copyFile(screenshot, savedScreenshot);
+        }
+
         driver.quit();
     }
 

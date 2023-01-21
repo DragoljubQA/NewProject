@@ -1,6 +1,7 @@
 package Base;
 
 import Helpers.Data;
+import Helpers.WebDriverFactory;
 import Pages.HomePage;
 import Pages.LoginPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -27,7 +28,10 @@ public class BaseTest {
 
     @BeforeClass
     public void setUp() throws IOException {
-        WebDriverManager.chromedriver().setup();
+        //System.setProperty("browser", "firefox");
+        //System.setProperty("browser", "edge");
+        //System.setProperty("browser", "safari");
+        WebDriverFactory.setupDriver();
         excelReader = new ExcelReader("TestData.xlsx");
     }
 
