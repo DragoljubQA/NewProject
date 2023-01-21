@@ -103,7 +103,9 @@ public class LoginTest extends BaseTest {
     public void tearDown(ITestResult result) throws IOException {
         if (result.getStatus() == ITestResult.FAILURE || result.getStatus() == ITestResult.SKIP){
             File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            File savedScreenshot = new File("target/screenshots/"+result.getTestClass().getRealClass().getSimpleName()+"/"+result.getMethod().getMethodName()+".jpg");
+            //File savedScreenshot = new File("target/screenshots/"+result.getTestClass().getRealClass().getSimpleName()+"/"+result.getMethod().getMethodName()+".jpg");
+            File savedScreenshot = new File("target/screenshots/"+System.currentTimeMillis()+".jpg");
+
             FileUtils.copyFile(screenshot, savedScreenshot);
         }
 
