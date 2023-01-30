@@ -35,7 +35,6 @@ public class HomepageTest extends BaseTest {
         loginPage.insertPassword(password);
         loginPage.clickOnLoginButton();
     }
-
     @Test
     public void hamburgerMenuIsHidden() {
         logIn(validUsername, validPassword);
